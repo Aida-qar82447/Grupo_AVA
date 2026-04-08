@@ -8,7 +8,7 @@ En este documento semanal se irá detallando el trabajo del grupo mediante la as
 
 ## 2\. Reparto de tareas:
 
-* **Alba:** Creación de dos logos, uno más serio, profesional que añadió al word del Proyecto y otro más infantil (para ponerlo en carteles para las clases de los niños, por ejemplo). Comienzo de la búsqueda de información sobre fauna y flora.
+* **Alba:** Creación de dos logos, uno más serio, profesional que añadió al word del Proyecto y otro más infantil (para ponerlo en carteles para las clases de los niños, por ejemplo). Comienzo de la búsqueda de información sobre fauna y flora. Creación de paleta de colores, tipografía, identidad. Creación de clips de vídeo de primavera, verano, otoño e invierno. Y creacion de los scripts de animación VFX primavera, verano, otoño e invierno.
 * **Aida:** Organización del grupo y desarrollo de ciertas propuestas como el logo o el GoogleForms para fichar, diseño del documento word sobre el que vamos a trabajar y actualización del documento de seguimiento. Creación de promts para generar las primeras imágenes y vídeos de la idea que queremos desarrollar para ver qué nos van ofreciendo las IAs (Gemini y Flow) y generación de las propias imágenes y vídeos.
 * **Víctor:** Creación del formulario para fichar de manera más realista y que quede mejor reflejado. Formateo y Código de la base de datos donde almacenamos las asistencias.
 
