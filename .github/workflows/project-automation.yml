@@ -1,0 +1,213 @@
+name: Project automation
+
+on:
+  project_v2_item:
+    types: [edited]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  projects: write
+
+jobs:
+  update-project-fields:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Update fields based on status
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const projectId = "PVT_kwHODiS0Ec4BUIFe";
+            const statusFieldId = "PVTSSF_lAHODiS0Ec4BUIFezhBSWi4";
+            const startDateFieldId = "PVTF_lAHODiS0Ec4BUIFezhBTaH4";
+            const dueDateFieldId = "PVTF_lAHODiS0Ec4BUIFezhBTaJA";
+            const STATUS_IN_PROGRESS = "47fc9ee4";
+            const STATUS_DONE = "98236657";
+            
+            // Validar que el payload contenga el item
+            if (!context.payload?.project_v2_item?.id) {
+              console.log("Error: No project_v2_item in payload");
+              return;
+            }
+            
+            const itemId = context.payload.project_v2_item.id;
+            const actor = context.actor;
+
+            console.log("Processing project item:", itemId);
+            console.log("Actor:", actor);
+
+            // 1. Obtener valores de campos
+            const fieldQuery = `
+            query($itemId: ID!) {
+              node(id: $itemId) {
+                ... on ProjectV2Item {
+                  id
+                  fieldValues(first: 20) {
+                    nodes {
+                      ... on ProjectV2ItemFieldSingleSelectValue {
+                        optionId
+                        name
+                        field {
+                          ... on ProjectV2SingleSelectField {
+                            id
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }`;
+
+            let fieldResult;
+            try {
+              fieldResult = await github.graphql(fieldQuery, { itemId });
+            } catch (error) {
+              console.log("Error fetching field values:", error.message);
+              return;
+            }
+
+            if (!fieldResult?.node?.fieldValues?.nodes) {
+              console.log("No field values found");
+              return;
+            }
+
+            const fieldValues = fieldResult.node.fieldValues.nodes;
+
+            console.log("Field values:", JSON.stringify(fieldValues, null, 2));
+
+            const statusField = fieldValues.find(f =>
+              f.field?.id === statusFieldId
+            );
+
+            if (!statusField) {
+              console.log("Status field not found");
+              return;
+            }
+
+            const statusOptionId = statusField.optionId;
+
+            console.log("Status option ID:", statusOptionId);
+            console.log("Status name:", statusField.name);
+
+            const today = new Date().toISOString().split('T')[0];
+
+            // 2. Función para actualizar fecha
+            async function setDate(fieldId, fieldName) {
+              console.log(`Updating ${fieldName} to:`, today);
+
+              try {
+                const result = await github.graphql(`
+                  mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $date: Date!) {
+                    updateProjectV2ItemFieldValue(input: {
+                      projectId: $projectId
+                      itemId: $itemId
+                      fieldId: $fieldId
+                      value: { date: $date }
+                    }) {
+                      projectV2Item {
+                        id
+                      }
+                    }
+                  }
+                `, {
+                  projectId,
+                  itemId,
+                  fieldId,
+                  date: today
+                });
+                
+                console.log(`✓ ${fieldName} updated successfully`);
+                return true;
+              } catch (error) {
+                console.log(`✗ Error updating ${fieldName}:`, error.message);
+                return false;
+              }
+            }
+
+            // 3. Obtener issue asociada (para asignar)
+            let issue_number = null;
+            let owner = null;
+            let repo = null;
+            let assignees = [];
+            let isIssue = false;
+            
+            try {
+              const issueQuery = `
+              query($itemId: ID!) {
+                node(id: $itemId) {
+                  ... on ProjectV2Item {
+                    content {
+                      ... on Issue {
+                        number
+                        title
+                        repository {
+                          nameWithOwner
+                        }
+                        assignees(first: 10) {
+                          nodes {
+                            login
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }`;
+              
+              const issueResult = await github.graphql(issueQuery, { itemId });
+              const issue = issueResult.node?.content;
+              
+              if (issue && issue.number) {
+                isIssue = true;
+                issue_number = issue.number;
+                const [issueOwner, issueRepo] = issue.repository.nameWithOwner.split('/');
+                owner = issueOwner;
+                repo = issueRepo;
+                assignees = issue.assignees?.nodes?.map(n => n.login) || [];
+                console.log(`✓ Issue #${issue_number} found:`, issue.title);
+                console.log(`  Current assignees:`, assignees.length === 0 ? "none" : assignees.join(', '));
+              } else {
+                console.log("ℹ No issue associated with this item (might be a draft or other content)");
+              }
+            } catch (error) {
+              console.log("⚠ Could not fetch issue data:", error.message);
+            }
+
+            // 4. Lógica de negocio
+
+            // IN PROGRESS
+            if (statusOptionId === STATUS_IN_PROGRESS) {
+              console.log("📌 Status = IN PROGRESS");
+
+              await setDate(startDateFieldId, "Fecha inicio");
+
+              if (isIssue && issue_number && owner && repo && assignees.length === 0) {
+                console.log("👤 No assignees found, assigning to:", actor);
+
+                try {
+                  await github.rest.issues.addAssignees({
+                    owner,
+                    repo,
+                    issue_number,
+                    assignees: [actor]
+                  });
+                  console.log(`✓ Issue #${issue_number} assigned to ${actor}`);
+                } catch (error) {
+                  console.log(`✗ Error assigning issue:`, error.message);
+                }
+              } else if (!isIssue) {
+                console.log("ℹ Not an issue, skipping auto-assignment");
+              } else if (assignees.length > 0) {
+                console.log("ℹ Issue already has assignees, skipping auto-assignment");
+              }
+            }
+
+            // DONE / CLOSED
+            if (statusOptionId === STATUS_DONE) {
+              console.log("✓ Status = DONE");
+
+              await setDate(dueDateFieldId, "Due date");
+            }
