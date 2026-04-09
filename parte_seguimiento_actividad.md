@@ -14,3 +14,6 @@ En este documento semanal se irá detallando el trabajo del grupo mediante la as
 
 ## 3\. Incidencias:
 
+Uno de los principales problemas que encontramos fue la generación de las imágenes y vídeos, ya que la IA presentaba inconsistencias visuales: elementos como animales o árboles aparecían y desaparecían sin lógica (por ejemplo, un árbol llegó a transformarse en una especie de fuego artificial mientras perdía sus hojas y frutos). Además, el modelo mezclaba las estaciones del año en una misma toma. 
+Para solucionarlo y mantener la consistencia visual, decidimos crear hojas de referencia técnicas para cada modelo. Para los árboles, diseñamos hojas con 6 imágenes: cuatro para representar cada estación (para diferenciar si los árboles son de hoja caduca o perenne) y otras dos con el detalle de las hojas, frutos y flores, si tuvieran. Para los animales, creamos hojas con 8 imágenes: cuatro de cuerpo entero donde se viera al animal de frente, de espaldas y por cada lado y; otras cuatro, siguiendo las mismas vistas, pero con un primer plano de la cabeza.
+También optamos por generar los vídeos independientes por cada estación y luego montarlos. De este modo, evitamos transiciones incoherentes (como imágenes divididas entre verano y otoño) y aseguramos la continuidad visual tras el montaje final.
