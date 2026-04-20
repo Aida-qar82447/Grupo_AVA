@@ -7,6 +7,8 @@ En este documento semanal se irá detallando el trabajo del grupo mediante la as
 * **Semana del 6 al 10**: tanto el lunes como el martes vino Francisco a terminar de darnos la formación y acudimos los tres miembros al centro. El miércoles, como es uno de los días que elegimos para asistir al centro, también asistimos los tres. El jueves y viernes nos conectamos desde casa.
 
 * **Semana del 13 al 17**: el lunes nos conectamos desde casa. El martes vinimos los tres al instituto. El miércoles asistimos los tres al instituto aunque nos marchamos sobre las 12:30 ya que, en clase se nos dificultaba el avance puesto que, teníamos que cambiar de cuentas y acceder a páginas que estaban vetadas en ese momento en el centro como CapCut (para seguir haciendo vídeos). El jueves nos conectamos los tres desde casa. El viernes también nos conectamos los tres desde casa.
+
+* **Semana del 20 al 24**: el lunes nos conectamos los tres desde casa. 
   
 ## 2\. Reparto de tareas:
 
