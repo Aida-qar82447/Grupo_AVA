@@ -8,4 +8,4 @@ A continuación pondremos una serie de *links* a modo de ayuda para navegar por 
   
 * En la carpeta [materialesComplementarios](https://github.com/Aida-qar82447/Grupo_AVA/tree/main/materialesComplementarios) se pueden ver las [fichas](https://github.com/Aida-qar82447/Grupo_AVA/tree/main/materialesComplementarios/Fichas) y [carteles](https://github.com/Aida-qar82447/Grupo_AVA/tree/main/materialesComplementarios/Carteles) que hemos desarrollado para que los docentes puedan trabajar en el aula con el alumnado y los *links* a los dos [vídeos](https://github.com/Aida-qar82447/Grupo_AVA/blob/main/materialesComplementarios/videos.md) que hemos creado.
 
-* Por último, añadir el *link* del [vídeo de presentación](https://educastur-my.sharepoint.com/:v:/g/personal/qar82447_educastur_es/IQAV6moy45iUSJXGHnQHu03FARxdsPXHZ9aMeRrqZp-rCOs?e=RyNF5O) de nuestro Proyecto.
+* Por último, añadir el *link* del [vídeo de presentación](https://educastur-my.sharepoint.com/:v:/g/personal/qar82447_educastur_es/IQAV6moy45iUSJXGHnQHu03FARxdsPXHZ9aMeRrqZp-rCOs?e=3gyB6H) de nuestro Proyecto.
